@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>AIRNEST A1 - Máy Lọc Không Khí</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+
+    <header class="navbar">
+
+        <div class="container nav-container">
+
+            <a href="#" class="logo" onclick="showPage('home'); return false;">
+
+                <img src="assets/images/logo/logo.jpg" alt="AIRNEST">
+
+                <span>AIRNEST A1</span>
+
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="#" onclick="showPage('home'); return false;">
+                    Trang chủ
+                </a>
+
+                <a href="#" onclick="showPage('products'); return false;">
+                    Sản phẩm
+                </a>
+
+                <a href="#" onclick="showPage('favorites'); return false;">
+                    Yêu thích (<span id="fav-count">0</span>)
+                </a>
+
+            </nav>
+
+            <div class="nav-actions">
+
+                <button class="btn-icon" onclick="showPage('cart')">
+                    Giỏ hàng (<span id="cart-count">0</span>)
+                </button>
+
+                <div id="user-nav">
+
+                    <button class="btn-outline" onclick="showPage('login')">
+                        Đăng nhập
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- TRANG CHỦ -->
+
+    <section id="page-home" class="page active">
+
+        <div class="hero-banner">
+
+            <div class="container hero-content">
+
+                <h1>
+                    MÁY LỌC KHÔNG KHÍ
+                    <span>AIRNEST A1</span>
+                </h1>
+
+                <p>
+                    Giải pháp lọc không khí thông minh,
+                    mang đến không gian sống trong lành
+                    cho gia đình bạn.
+                </p>
+
+                <button class="btn-primary" onclick="showPage('products')">
+                    Khám Phá Sản Phẩm
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="container section">
+
+            <h2 class="section-title">
+                SẢN PHẨM NỔI BẬT
+            </h2>
+
+            <p class="section-description">
+                Khám phá các sản phẩm máy lọc không khí AIRNEST A1.
+            </p>
+
+            <div class="product-grid" id="featured-products"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- DANH SÁCH SẢN PHẨM -->
+
+    <section id="page-products" class="page">
+
+        <div class="container section">
+
+            <h2 class="section-title">
+                TẤT CẢ SẢN PHẨM
+            </h2>
+
+            <div class="filter-bar">
+
+                <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm..." oninput="filterProducts()">
+
+                <div class="category-buttons">
+
+                    <button class="btn-cat active" onclick="setCategory('all', this)">
+                        Tất cả
+                    </button>
+
+                    <button class="btn-cat" onclick="setCategory('may-loc-khong-khi', this)">
+                        Máy lọc không khí
+                    </button>
+
+                    <button class="btn-cat" onclick="setCategory('loi-loc-hepa', this)">
+                        Lõi lọc HEPA
+                    </button>
+
+                    <button class="btn-cat" onclick="setCategory('phu-kien', this)">
+                        Phụ kiện
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="product-grid" id="all-products"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CHI TIẾT SẢN PHẨM -->
+
+    <section id="page-detail" class="page">
+
+        <div class="container section">
+
+            <button class="btn-outline" onclick="showPage('products')">
+                ← Quay lại
+            </button>
+
+            <div class="detail-wrapper" id="product-detail-content"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- GIỎ HÀNG -->
+
+    <section id="page-cart" class="page">
+
+        <div class="container section">
+
+            <h2 class="section-title">
+                GIỎ HÀNG CỦA BẠN
+            </h2>
+
+            <div id="cart-items-container"></div>
+
+            <div class="cart-summary" id="cart-summary">
+
+                <h3>
+                    Tổng tiền:
+                    <span id="cart-total-price">0đ</span>
+                </h3>
+
+                <button class="btn-primary" onclick="showPage('checkout')">
+                    Tiến Hành Đặt Hàng
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- YÊU THÍCH -->
+
+    <section id="page-favorites" class="page">
+
+        <div class="container section">
+
+            <h2 class="section-title">
+                SẢN PHẨM YÊU THÍCH
+            </h2>
+
+            <div class="product-grid" id="favorite-products"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- THANH TOÁN -->
+
+    <section id="page-checkout" class="page">
+
+        <div class="container section max-w-600">
+
+            <h2 class="section-title">
+                THÔNG TIN ĐẶT HÀNG
+            </h2>
+
+            <form id="checkout-form" class="form-card" onsubmit="handleCheckout(event)">
+
+                <div class="form-group">
+
+                    <label for="cust-name">Họ và tên *</label>
+
+                    <input type="text" id="cust-name" required placeholder="Nhập họ tên">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="cust-phone">Số điện thoại *</label>
+
+                    <input type="tel" id="cust-phone" required placeholder="Nhập số điện thoại">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="cust-address">Địa chỉ giao hàng *</label>
+
+                    <textarea id="cust-address" rows="3" required placeholder="Nhập địa chỉ nhận hàng"></textarea>
+
+                </div>
+
+                <div class="checkout-summary-box">
+
+                    <p>
+                        Tổng thanh toán:
+                        <strong id="checkout-total">0đ</strong>
+                    </p>
+
+                    <p>
+                        Phương thức: Thanh toán khi nhận hàng (COD)
+                    </p>
+
+                </div>
+
+                <button type="submit" class="btn-primary btn-block">
+                    XÁC NHẬN ĐẶT HÀNG
+                </button>
+
+            </form>
+
+        </div>
+
+    </section>
+
+
+    <!-- ĐĂNG NHẬP -->
+
+    <section id="page-login" class="page">
+
+        <div class="container section max-w-400">
+
+            <div class="auth-card">
+
+                <h2>ĐĂNG NHẬP AIRNEST</h2>
+
+                <form id="auth-form" onsubmit="handleAuth(event)">
+
+                    <div class="form-group">
+
+                        <label for="auth-username">
+                            Tên đăng nhập
+                        </label>
+
+                        <input type="text" id="auth-username" required>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        <label for="auth-password">
+                            Mật khẩu
+                        </label>
+
+                        <input type="password" id="auth-password" required>
+
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-block">
+                        Đăng Nhập
+                    </button>
+
+                </form>
+
+                <p class="auth-hint">
+                    Chế độ đăng nhập demo.
+                    Nhập tài khoản admin để xem trang quản trị.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ADMIN -->
+
+    <section id="page-admin" class="page">
+
+        <div class="container section">
+
+            <div class="admin-header">
+
+                <h2>QUẢN TRỊ AIRNEST A1</h2>
+
+                <button class="btn-outline" onclick="logoutAdmin()">
+                    Đăng xuất
+                </button>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+                <div class="stat-card">
+
+                    <h4>Tổng sản phẩm</h4>
+
+                    <p id="stat-products-count">0</p>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <h4>Tổng đơn hàng</h4>
+
+                    <p id="stat-orders-count">0</p>
+
+                </div>
+
+                <div class="stat-card">
+
+                    <h4>Giá trị đơn hàng</h4>
+
+                    <p id="stat-revenue">0đ</p>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-block">
+
+                <div class="admin-block-header">
+
+                    <h3>QUẢN LÝ SẢN PHẨM</h3>
+
+                    <button class="btn-primary" onclick="showAddProductModal()">
+                        + Thêm sản phẩm
+                    </button>
+
+                </div>
+
+                <div class="table-responsive">
+
+                    <table class="data-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Hình ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Danh mục</th>
+                                <th>Giá bán</th>
+                                <th>Thao tác</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="admin-product-list"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+
+            <div class="admin-block">
+
+                <h3>DANH SÁCH ĐƠN HÀNG</h3>
+
+                <div class="table-responsive">
+
+                    <table class="data-table">
+
+                        <thead>
+
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Khách hàng</th>
+                                <th>Số điện thoại</th>
+                                <th>Tổng tiền</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody id="admin-order-list"></tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <h3>AIRNEST A1</h3>
+
+            <p>
+                Giải pháp lọc không khí cho không gian sống hiện đại.
+            </p>
+
+            <p>
+                © 2026 AIRNEST A1. All rights reserved.
+            </p>
+
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+
+    <script>
+        window.difyChatbotConfig = {
+            token: '3gsHjamiiZ7Fqkvw',
+            baseUrl: 'https://udify.app',
+            inputs: {
+                // You can define the inputs from the Start node here
+                // key is the variable name
+                // e.g.
+                // name: "NAME"
+            },
+            systemVariables: {
+                // user_id: 'YOU CAN DEFINE USER ID HERE',
+                // conversation_id: 'YOU CAN DEFINE CONVERSATION ID HERE, IT MUST BE A VALID UUID',
+            },
+            userVariables: {
+                // avatar_url: 'YOU CAN DEFINE USER AVATAR URL HERE',
+                // name: 'YOU CAN DEFINE USER NAME HERE',
+            },
+        }
+    </script>
+    <script src="https://udify.app/embed.min.js" id="3gsHjamiiZ7Fqkvw" defer>
+    </script>
+    <style>
+        #dify-chatbot-bubble-button {
+            background-color: #1C64F2 !important;
+        }
+
+        #dify-chatbot-bubble-window {
+            width: 24rem !important;
+            height: 40rem !important;
+        }
+    </style>
+
+</body>
+
+</html>
